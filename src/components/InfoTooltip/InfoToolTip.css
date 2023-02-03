@@ -1,0 +1,108 @@
+.popup {
+   position: fixed;
+   top: 0;
+   left: 0;
+   height: 100%;
+   width: 100%;
+   align-items: center;
+   background-color: rgba(0, 0, 0, 0.5);
+   display: flex;
+   justify-content: center;
+   transition: visibility 0.3s linear, opacity 0.3s linear;
+   opacity: 0;
+   visibility: hidden;
+}
+
+.popup_opened {
+   opacity: 1;
+   visibility: visible;
+}
+
+.popup__container {
+   background: #fff;
+   border-radius: 10px;
+   box-shadow: 0 0 25px rgb(0 0 0 / 15%);
+   box-sizing: border-box;
+   cursor: default;
+   padding: 34px 36px 37px;
+   position: relative;
+   width: 430px;
+}
+
+.popup__close {
+   height: 32px;
+   width: 32px;
+   box-sizing: border-box;
+   background-color: transparent;
+   border: none;
+   background-image: url(../../images/close-Icon.svg);
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: center;
+   position: absolute;
+   right: -40px;
+   top: -40px;
+   cursor: pointer;
+}
+
+.popup__content {
+   box-sizing: border-box;
+   display: flex;
+   flex-direction: column;
+   height: 100%;
+   align-items: center;
+}
+
+.popup__image {
+   background-position: 50%;
+   background-repeat: no-repeat;
+   margin: 26px 0 32px;
+   background-size: contain;
+   width: 120px;
+   height: 120px;
+}
+
+.popup__image_type_failImage {
+   background-image: url(../../images/failImage.svg);
+}
+
+.popup__image_type_successImage {
+   background-image: url(../../images/successImage.svg);
+}
+
+.popup__content-title {
+   width: 100%;
+   color: #000;
+   font-size: 24px;
+   font-weight: 500;
+   line-height: 29px;
+   margin: 0;
+   padding-bottom: 25px;
+   text-align: center;
+   text-overflow: ellipsis;
+   overflow: hidden;
+}
+
+@media screen and (max-width: 550px) {
+   .popup__container {
+      width: 280px;
+      padding: 25px 22px;
+   }
+
+   .popup__close {
+      width: 20px;
+      height: 20px;
+      top: -36px;
+      right: 0;
+   }
+
+   .popup__content-title {
+      font-size: 18px;
+      line-height: 22px;
+      padding-bottom: 20px;
+   }
+
+   .popup__image {
+      background-size: 100px 100px;
+   }
+}

@@ -1,0 +1,143 @@
+.searchForm {
+   display: flex;
+   max-width: 1280px;
+   min-height: 291px;
+   width: 100%;
+   flex-direction: column;
+   margin: 0;
+   padding: 138px 70px 30px;
+   box-sizing: border-box;
+}
+
+.searchForm__form {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   padding: 0 0 8px;
+   position: relative;
+   width: 100%;
+}
+
+.searchForm__searchImage {
+   background-image: url(../../images/searchIcon.svg);
+   background-repeat: no-repeat;
+   background-size: contain;
+   height: 34px;
+   width: 34px;
+   margin: 0 0 0 6px;
+   position: absolute;
+   left: 0;
+   top: 8px;
+   /*z-index: 5;*/
+}
+
+.searchForm__searchButton {
+   font-weight: 500;
+   font-size: 11px;
+   line-height: 18px;
+   color: #ffffff;
+   text-decoration: none;
+   height: 34px;
+   width: 60px;
+   background-color: #3456f3;
+   border: none;
+   border-radius: 48px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   opacity: 1;
+   transition: opacity 0.3s;
+   position: absolute;
+   right: 0;
+   top: 8px;
+   /*z-index: 5;*/
+}
+
+.searchForm__searchButton:hover {
+   cursor: pointer;
+   opacity: 0.7;
+}
+
+.searchForm__itemContainer {
+   width: 100%;
+   padding: 0 0 7px;
+   border-bottom: solid 1px #e8e8e8;
+}
+
+.searchForm__item {
+   width: 100%;
+   margin: 0;
+   box-sizing: border-box;
+   border: none;
+   font-weight: 500;
+   font-size: 28px;
+   line-height: 34px;
+   padding: 8px 80px;
+   text-align: center;
+}
+
+.searchForm__item:focus {
+   outline: none;
+}
+
+.searchForm__item::placeholder {
+   color: #a0a0a0;
+}
+
+.searchForm__input-error {
+   display: block;
+   visibility: hidden;
+   font-size: 14px;
+   line-height: 20px;
+   color: #ff3055;
+   padding: 2px 0 2px;
+   min-height: 24px;
+   width: 100%;
+   text-align: center;
+}
+
+.searchForm__input-error_active {
+   visibility: visible;
+}
+
+@media screen and (max-width: 800px) {
+   .searchForm {
+      min-height: 320px;
+      padding: 152px 30px 30px;
+   }
+}
+
+@media screen and (max-width: 450px) {
+   .searchForm {
+      min-height: 358px;
+      padding: 168px 14px 30px;
+   }
+
+   .searchForm__form {
+      padding-bottom: 16px;
+   }
+
+   .searchForm__searchImage {
+      display: none;
+   }
+
+   .searchForm__item {
+      font-size: 18px;
+      line-height: 22px;
+      padding: 4px 80px 4px 0;
+      text-align: start;
+   }
+
+   .searchForm__searchButton {
+      top: -2px;
+   }
+
+   .searchForm__itemContainer {
+      padding-bottom: 10px;
+   }
+
+   .searchForm__input-error {
+      font-size: 12px;
+      line-height: 14px;
+   }
+}

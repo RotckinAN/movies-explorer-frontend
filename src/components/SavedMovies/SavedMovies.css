@@ -1,0 +1,13 @@
+.savedMovies {
+   display: flex;
+   max-width: 1280px;
+   width: 100%;
+   min-height: calc(100vh - 172px);
+   flex-direction: column;
+}
+
+@media screen and (max-width: 450px) {
+   .savedMovies {
+      min-height: calc(100vh - 252px);
+   }
+}

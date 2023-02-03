@@ -1,0 +1,46 @@
+.inputOfUserForm__inputTitle {
+   font-weight: 400;
+   font-size: 10px;
+   line-height: 12px;
+   color: #a0a0a0;
+}
+
+.inputOfUserForm__item {
+   width: 100%;
+   min-width: 396px;
+   margin: 10px 0 0;
+   box-sizing: border-box;
+   border: 1px solid #f9f9f9;
+   background: #f9f9f9;
+   border-radius: 8px;
+   font-size: 13px;
+   font-weight: 500;
+   line-height: 16px;
+   padding: 15px;
+}
+
+.inputOfUserForm__item:focus {
+   border-color: #2be080;
+   color: #000000;
+   outline: none;
+}
+
+.inputOfUserForm__item_type_error {
+   color: #ff3055;
+}
+
+.inputOfUserForm__input-error {
+   display: block;
+   font-size: 10px;
+   line-height: 12px;
+   color: #ff3055;
+   margin: 8px 0 8px;
+   min-height: 24px;
+   width: 100%;
+}
+
+@media screen and (max-width: 450px) {
+   .inputOfUserForm__item {
+      min-width: 260px;
+   }
+}
