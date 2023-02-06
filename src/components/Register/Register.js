@@ -67,6 +67,7 @@ function Register({ setIsInfoTooltipOpen }) {
             value={password.value || ''}
             inputName="registerPassword"
             isDirty={password.isDirty}
+            minLength="2"
             errorMessage={password.inputError}
          />
       </UserForm>

@@ -1,6 +1,7 @@
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import AccountLinkButton from '../AccountLinkButton/AccountLinkButton';
 
-function SideBar({ isOpen, handleButtonClick }) {
+function SideBar({ isOpen, handleButtonClick, isLoggedIn }) {
    let activeStyle = {
       borderBottom: 'solid 2px black',
    };
@@ -47,9 +48,7 @@ function SideBar({ isOpen, handleButtonClick }) {
                   </NavLink>
                </li>
             </ul>
-            <Link to={'/profile'} className="sideBar__accountLink">
-               Аккаунт
-            </Link>
+            <AccountLinkButton isLoggedIn={isLoggedIn} isButtonHidden={false} />
          </nav>
       </div>
    );

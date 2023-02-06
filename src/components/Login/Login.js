@@ -55,6 +55,7 @@ function Login({ setIsInfoTooltipOpen }) {
             value={password.value || ''}
             inputName="loginPassword"
             isDirty={password.isDirty}
+            minLength="2"
             errorMessage={password.inputError}
          />
       </UserForm>

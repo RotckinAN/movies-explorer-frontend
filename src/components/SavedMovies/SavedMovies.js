@@ -1,5 +1,5 @@
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
+// import Header from '../Header/Header';
+// import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import useInput from '../../hooks/useInput';
 import { useState } from 'react';

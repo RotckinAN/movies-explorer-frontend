@@ -14,7 +14,7 @@ const MovieCard = ({ cardType, nameRU, duration, imageLink }) => {
          ? 'movieCard__button movieCard__savedButton'
          : 'movieCard__savedButton_hidden'
    }`;
-   function time(dur) {
+   function timingFunc(dur) {
       return `${Math.floor(dur / 60)}ч ${dur % 60}мин`;
    }
 
@@ -31,7 +31,7 @@ const MovieCard = ({ cardType, nameRU, duration, imageLink }) => {
          <div className="movieCard__titleContainer">
             <div className="movieCard__textContainer">
                <h2 className="movieCard__title">{nameRU}</h2>
-               <p className="movieCard__duration">{time(duration)}</p>
+               <p className="movieCard__duration">{timingFunc(duration)}</p>
             </div>
             <button
                className={favoriteButtonClassName}

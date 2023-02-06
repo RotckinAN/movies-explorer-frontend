@@ -2,6 +2,16 @@ import React from 'react';
 import Portfolio from '../Portfolio/Portfolio';
 
 function AboutMe({ aboutMe, portfolio }) {
+   const fullAge = new Date().getFullYear() - 1986;
+   let years = '';
+   const lastNumber = Number(fullAge.toString()[fullAge.toString().length - 1]);
+   if (lastNumber === 2 || lastNumber === 3 || lastNumber === 4) {
+      years = 'года';
+   } else if (lastNumber === 1) years = 'год';
+   else {
+      years = 'лет';
+   }
+
    return (
       <section className="aboutMe" id={aboutMe}>
          <h2 className="aboutMe__title">Студент</h2>
@@ -10,7 +20,7 @@ function AboutMe({ aboutMe, portfolio }) {
                <div className="aboutMe__text">
                   <h3 className="aboutMe__subtitle">Анатолий</h3>
                   <p className="aboutMe__topParagraph">
-                     Фронтенд-разработчик, {new Date().getFullYear() - 1986}
+                     Фронтенд-разработчик, {fullAge} {years}
                   </p>
                   <p className="aboutMe__paragraph">
                      Я родился и живу в Калининграде, закончил строительный

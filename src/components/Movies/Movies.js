@@ -1,9 +1,9 @@
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
+// import Header from '../Header/Header';
+// import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import useInput from '../../hooks/useInput';
 import { useState } from 'react';
-import MovieCard from '../MoviesCard/MovieCard';
+// import MovieCard from '../MoviesCard/MovieCard';
 import { movies } from '../../utils/movies';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';

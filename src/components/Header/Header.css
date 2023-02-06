@@ -5,101 +5,14 @@
    position: absolute;
    top: 0;
    z-index: 5;
-}
-
-.header__container {
    display: flex;
+   align-items: center;
    justify-content: space-between;
-   align-items: center;
-   padding: 0 70px 0;
 }
 
-.header__linkContainer {
-   display: flex;
-   list-style: none;
-   margin: 0;
-   padding: 0;
-   height: 74px;
-   align-items: center;
-   gap: 17px;
-}
-
-.header__linkContainer_type_auth {
-   gap: 30px;
-}
-
-.header__logoLink {
-   background-image: url(../../images/logo.svg);
-   background-position: 50%;
-   background-repeat: no-repeat;
-   background-size: contain;
-   height: 38px;
-   width: 38px;
-   margin: 0;
-}
-
-.header__link {
-   opacity: 1;
-   transition: opacity 0.3s;
-   color: #000000;
-   font-weight: 400;
-   font-size: 13px;
-   line-height: 18px;
-   text-decoration: none;
-}
-
-.header__link_type_signUp {
-   font-weight: 500;
-   font-size: 12px;
-   line-height: 16px;
-   color: #ffffff;
-}
-
-.header__link_type_signIn {
-   font-weight: 500;
-   font-size: 12px;
-   line-height: 16px;
-   height: 32px;
-   width: 76px;
-   background-color: #2be080;
-   border-radius: 3px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-}
-
-.header__link_inactive,
-.header__accountLink_inactive,
 .header__sideBarButton_inactive {
    opacity: 0;
    display: none;
-}
-
-.header__link_type_movies {
-   font-weight: 500;
-   margin-left: 27px;
-}
-
-.header__accountLink {
-   font-weight: 500;
-   font-size: 14px;
-   line-height: 16px;
-   color: #000000;
-   text-decoration: none;
-   height: 32px;
-   width: 100px;
-   background-color: #f9f9f9;
-   border-radius: 20px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   opacity: 1;
-   transition: opacity 0.3s;
-}
-
-.header__link:hover,
-.header__accountLink:hover {
-   opacity: 0.7;
 }
 
 .header__sideBarButton {
@@ -118,26 +31,12 @@
 }
 
 @media screen and (max-width: 800px) {
-   .header__link_type_movies,
-   .header__link_type_savedMovies,
-   .header__accountLink {
-      display: none;
-   }
-
    .header__sideBarButton {
       display: flex;
-   }
-
-   .header__container {
-      padding: 0 25px 0;
    }
 }
 
 @media screen and (max-width: 450px) {
-   .header__container {
-      padding: 0 15px 0;
-   }
-
    .header__sideBarButton {
       width: 22px;
       margin: 8px;
