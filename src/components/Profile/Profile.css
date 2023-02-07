@@ -1,0 +1,141 @@
+.profile {
+   display: flex;
+   flex-direction: column;
+   width: 410px;
+   margin: 0 auto;
+   height: 100%;
+   min-height: 100vh;
+   justify-content: center;
+}
+
+.profile__title {
+   font-weight: 500;
+   font-size: 24px;
+   line-height: 29px;
+   color: #000000;
+   margin: 0 auto;
+}
+
+.profile__container {
+   padding-top: 120px;
+}
+
+.profile__titleContainer {
+   display: flex;
+   justify-content: space-between;
+   font-weight: 500;
+   font-size: 11px;
+   line-height: 13px;
+   color: #000000;
+   align-items: center;
+}
+
+.profile__inputContainer:nth-of-type(2n) {
+   margin-top: 10px;
+}
+
+.profile__inputContainer:nth-of-type(2n + 1) {
+   border-bottom: 1px solid #e8e8e8;
+}
+
+.profile__inputContainer:last-of-type {
+   padding-bottom: 180px;
+}
+
+.profile__info {
+   font-weight: 400;
+   max-width: 350px;
+   width: 100%;
+   margin: 0;
+   border: 1px solid transparent;
+   box-sizing: border-box;
+   padding: 4px;
+   text-align: end;
+   border-radius: 5px;
+}
+
+.profile__info:focus {
+   border-color: #2be080;
+   outline: none;
+}
+
+.profile__input-error {
+   display: block;
+   font-size: 10px;
+   line-height: 12px;
+   color: #ff3055;
+   margin: 5px 0 5px;
+   min-height: 12px;
+   width: 100%;
+   text-align: end;
+}
+
+.profile__input-error_type_email {
+   min-height: 24px;
+}
+
+.profile__button {
+   width: 100%;
+   font-weight: 400;
+   font-size: 13px;
+   line-height: 16px;
+   background: transparent;
+   border: 0;
+   height: 16px;
+   padding: 0;
+   margin: 0 auto;
+   opacity: 1;
+   transition: 0.3s;
+}
+
+.profile__button_invalid {
+   opacity: 0.5;
+}
+
+.profile__button_type_exit {
+   font-weight: 500;
+   color: #ff3055;
+   margin: 16px 0 20px;
+}
+
+.profile__button:hover {
+   cursor: pointer;
+   opacity: 0.7;
+   transition: 0.3s;
+}
+
+.profile__button_invalid:hover {
+   cursor: default;
+   opacity: 0.5;
+}
+
+@media screen and (max-width: 450px) {
+   .profile {
+      align-items: center;
+      width: 260px;
+   }
+
+   .profile__container {
+      width: 100%;
+   }
+
+   .profile__title {
+      padding-top: 100px;
+   }
+
+   .profile__info {
+      max-width: 220px;
+   }
+
+   .profile__input-error {
+      min-height: 24px;
+   }
+
+   .profile__input-error_type_email {
+      min-height: 36px;
+   }
+
+   .profile__inputContainer:last-of-type {
+      padding-bottom: 310px;
+   }
+}

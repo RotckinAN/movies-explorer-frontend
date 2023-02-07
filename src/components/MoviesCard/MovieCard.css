@@ -1,0 +1,101 @@
+.movieCard {
+   background: #fdfdfd;
+   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+   width: fit-content;
+   max-width: 364px;
+}
+
+.movieCard__titleContainer {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 14px;
+}
+
+.movieCard__textContainer {
+   display: flex;
+   flex-direction: column;
+   gap: 9px;
+   max-width: calc(100% - 45px);
+}
+
+.movieCard__title {
+   font-weight: 500;
+   font-size: 15px;
+   line-height: 18px;
+   margin: 0;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   overflow: hidden;
+}
+
+.movieCard__duration {
+   font-weight: 400;
+   font-size: 11px;
+   line-height: 13px;
+   color: #a0a0a0;
+   margin: 0;
+}
+
+.movieCard__button {
+   background-repeat: no-repeat;
+   background-size: contain;
+   background-color: transparent;
+   object-position: center;
+   height: 30px;
+   width: 30px;
+   margin: 0;
+   border: none;
+   padding: 0;
+   cursor: pointer;
+   opacity: 1;
+   transition: opacity 0.3s linear;
+}
+
+.movieCard__favoriteButton_hidden,
+.movieCard__savedButton_hidden {
+   display: none;
+}
+
+.movieCard__favoriteButton_inactive {
+   background-image: url(../../images/toFavorite.svg);
+}
+
+.movieCard__favoriteButton_active {
+   background-image: url(../../images/favorite.svg);
+}
+
+.movieCard__savedButton {
+   background-image: url(../../images/deleteFavorite.svg);
+}
+
+.movieCard__favoriteButton:hover {
+   opacity: 0.7;
+}
+
+.movieCard__mainImage {
+   width: 364px;
+   height: 203px;
+}
+
+@media screen and (max-width: 850px) {
+   .movieCard {
+      max-width: 339px;
+   }
+
+   .movieCard__mainImage {
+      width: 339px;
+      height: 190px;
+   }
+}
+
+@media screen and (max-width: 450px) {
+   .movieCard {
+      max-width: 300px;
+   }
+
+   .movieCard__mainImage {
+      width: 300px;
+      height: 168px;
+   }
+}

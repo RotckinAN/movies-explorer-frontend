@@ -1,0 +1,63 @@
+.linkPortfolio {
+   font-weight: 400;
+   font-size: 25px;
+   line-height: 45px;
+   letter-spacing: -0.04em;
+   min-height: 89px;
+   width: 100%;
+   text-decoration: none;
+   color: #a0a0a0;
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   align-content: center;
+   box-sizing: border-box;
+   background-image: url('../../images/link.svg');
+   background-repeat: no-repeat;
+   background-position-x: right;
+   background-position-y: center;
+   background-size: 20px 20px;
+   transition: all 0.15s;
+   border-bottom: solid 1px #e8e8e8;
+   padding-right: 20px;
+}
+
+.linkPortfolio:last-child {
+   border-bottom: solid 1px transparent;
+}
+
+.linkPortfolio__siteTitle {
+   font-size: 30px;
+   line-height: 50px;
+   letter-spacing: -0.04em;
+   color: #000000;
+   transition: all 0.15s;
+}
+
+.linkPortfolio:hover {
+   color: #2be080;
+   background-image: url('../../images/link_active.png');
+}
+
+.linkPortfolio:hover .linkPortfolio__siteTitle {
+   color: #2be080;
+}
+
+@media screen and (max-width: 800px) {
+   .linkPortfolio__siteTitle {
+      font-size: 28px;
+   }
+}
+
+@media screen and (max-width: 450px) {
+   .linkPortfolio {
+      font-size: 16px;
+      line-height: 26px;
+      min-height: 67px;
+   }
+
+   .linkPortfolio__siteTitle {
+      font-size: 18px;
+      line-height: 28px;
+   }
+}

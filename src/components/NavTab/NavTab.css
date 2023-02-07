@@ -1,0 +1,64 @@
+.navTab {
+   display: flex;
+   gap: 15px;
+}
+
+.navTab__button {
+   font-weight: 500;
+   font-size: 12px;
+   line-height: 16px;
+   text-decoration: none;
+   height: 36px;
+   width: 129px;
+   box-sizing: border-box;
+   color: #ffffff;
+   background-color: transparent;
+   border: 1px solid #ffffff;
+   border-radius: 3px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   opacity: 1;
+   visibility: visible;
+   transition: opacity 0.3s, visibility 0.3s;
+}
+
+.navTab__button:hover {
+   cursor: pointer;
+   opacity: 0.7;
+}
+
+.navTab__button_type_navigate {
+   border: 1px solid #a0a0a0;
+}
+
+.navTab__button_type_navigate:hover {
+   border: 1px solid #2be080;
+   opacity: 1;
+   color: #2be080;
+}
+
+.navTab__button_type_inactive {
+   visibility: hidden;
+   opacity: 0;
+}
+
+.navTab__linkContainer {
+   display: flex;
+   gap: 15px;
+}
+
+@media screen and (max-width: 1150px) {
+   .navTab {
+      flex-direction: column;
+      flex-wrap: wrap;
+      align-items: center;
+      padding-bottom: 20px;
+   }
+
+   .navTab__linkContainer {
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+   }
+}
