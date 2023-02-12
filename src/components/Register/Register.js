@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import useInput from '../../hooks/useInput';
 import InputOfUserForm from '../InputOfUserForm/InputOfUserForm';
 
-function Register({ setIsInfoTooltipOpen }) {
+function Register({ setIsInfoTooltipOpen, onRegister }) {
    const name = useInput();
    const email = useInput();
    const password = useInput();
@@ -11,17 +11,27 @@ function Register({ setIsInfoTooltipOpen }) {
 
    function handleSubmit(evt) {
       evt.preventDefault();
-      setIsInfoTooltipOpen(true); // временно для проверки
-      // будет код
+      onRegister({
+         name: name.value,
+         email: email.value,
+         password: password.value,
+      });
    }
 
-   useEffect(() => {
-      if (name.inputValid && email.inputValid && password.inputValid) {
-         setFormValid(true);
-      } else {
-         setFormValid(false);
-      }
-   }, [name.inputValid, email.inputValid, password.inputValid]);
+   // useEffect(() => {
+   //    console.log(name.inputValid);
+   //    if (
+   //       // name.inputValid &&
+   //       name.inputValid
+   //       // email.inputValid &&
+   //       // password.inputValid
+   //    ) {
+   //       setFormValid(true);
+   //    } else {
+   //       setFormValid(false);
+   //    }
+   //    // }, [name.inputValid, email.inputValid, password.inputValid]);
+   // }, [name.inputValid]);
 
    return (
       <UserForm
@@ -39,7 +49,8 @@ function Register({ setIsInfoTooltipOpen }) {
             id="inputRegisterName"
             labelName="Имя"
             type="text"
-            onChange={name.handleChange}
+            onChange={name.handleChangeInputName}
+            // onChange={name.handleChange}
             value={name.value || ''}
             inputName="registerName"
             isDirty={name.isDirty}
@@ -47,29 +58,29 @@ function Register({ setIsInfoTooltipOpen }) {
             maxLength="30"
             errorMessage={name.inputError}
          />
-         <InputOfUserForm
-            id="inputRegisterEmail"
-            labelName="E-mail"
-            type="email"
-            onChange={email.handleChange}
-            value={email.value || ''}
-            inputName="registerEmail"
-            isDirty={email.isDirty}
-            minLength="2"
-            maxLength="30"
-            errorMessage={email.inputError}
-         />
-         <InputOfUserForm
-            id="inputRegisterPassword"
-            labelName="Пароль"
-            type="password"
-            onChange={password.handleChange}
-            value={password.value || ''}
-            inputName="registerPassword"
-            isDirty={password.isDirty}
-            minLength="2"
-            errorMessage={password.inputError}
-         />
+         {/*<InputOfUserForm*/}
+         {/*   id="inputRegisterEmail"*/}
+         {/*   labelName="E-mail"*/}
+         {/*   type="email"*/}
+         {/*   onChange={email.handleChange}*/}
+         {/*   value={email.value || ''}*/}
+         {/*   inputName="registerEmail"*/}
+         {/*   isDirty={email.isDirty}*/}
+         {/*   minLength="2"*/}
+         {/*   maxLength="30"*/}
+         {/*   errorMessage={email.inputError}*/}
+         {/*/>*/}
+         {/*<InputOfUserForm*/}
+         {/*   id="inputRegisterPassword"*/}
+         {/*   labelName="Пароль"*/}
+         {/*   type="password"*/}
+         {/*   onChange={password.handleChange}*/}
+         {/*   value={password.value || ''}*/}
+         {/*   inputName="registerPassword"*/}
+         {/*   isDirty={password.isDirty}*/}
+         {/*   minLength="2"*/}
+         {/*   errorMessage={password.inputError}*/}
+         {/*/>*/}
       </UserForm>
    );
 }

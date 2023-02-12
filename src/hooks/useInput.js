@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useValidation from './useValidation';
+import { regex } from '../utils/regex';
 
 function useInput() {
    const [value, setValue] = useState('');
@@ -11,12 +12,22 @@ function useInput() {
       setIsDirty,
       setInputValid,
       setInputError,
+      nameInputValidation,
    } = useValidation();
 
    function handleChange(evt) {
       setValue(evt.target.value);
       validation(evt.target);
    }
+
+   function handleChangeInputName(evt) {
+      setValue(evt.target.value);
+      // nameInputValidation(evt.target);
+   }
+
+   useEffect(() => {
+      nameInputValidation(value);
+   }, [value]);
 
    return {
       value,
@@ -28,6 +39,7 @@ function useInput() {
       setInputError,
       inputValid,
       setInputValid,
+      handleChangeInputName,
    };
 }
 

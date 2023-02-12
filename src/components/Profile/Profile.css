@@ -39,7 +39,7 @@
 }
 
 .profile__inputContainer:last-of-type {
-   padding-bottom: 180px;
+   padding-bottom: 130px;
 }
 
 .profile__info {
@@ -52,6 +52,7 @@
    padding: 4px;
    text-align: end;
    border-radius: 5px;
+   background-color: transparent;
 }
 
 .profile__info:focus {
@@ -74,7 +75,19 @@
    min-height: 24px;
 }
 
-.profile__button {
+.profile__submitErrorMessage {
+   font-weight: 400;
+   font-size: 11px;
+   line-height: 13px;
+   /*margin: 0 auto;*/
+   color: #ff004c;
+   display: block;
+   text-align: center;
+   min-height: 26px;
+   padding-bottom: 24px;
+}
+
+.profile__editButton {
    width: 100%;
    font-weight: 400;
    font-size: 13px;
@@ -88,23 +101,53 @@
    transition: 0.3s;
 }
 
-.profile__button_invalid {
+.profile__editButton_invalid {
+   display: none;
+}
+
+.profile__saveButton {
+   display: none;
+   width: 100%;
+   background: #3456f3;
+   border-radius: 3px;
+   border: 0;
+   align-items: center;
+   justify-content: center;
+   color: #fff;
+   font-size: 14px;
+   line-height: 17px;
+   font-weight: 500;
+   height: 45px;
+   margin: 0 0 3px;
+   padding: 0;
+   text-align: center;
+   opacity: 1;
+   transition: 0.3s;
+}
+
+.profile__saveButton_invalidActive {
+   display: flex;
    opacity: 0.5;
 }
 
-.profile__button_type_exit {
-   font-weight: 500;
-   color: #ff3055;
-   margin: 16px 0 20px;
+.profile__saveButton_active {
+   display: flex;
+   opacity: 1;
 }
 
-.profile__button:hover {
+.profile__editButton_type_exit {
+   font-weight: 500;
+   color: #ff3055;
+   margin: 16px 0 0;
+}
+
+.profile__editButton:hover {
    cursor: pointer;
    opacity: 0.7;
    transition: 0.3s;
 }
 
-.profile__button_invalid:hover {
+.profile__saveButton_invalid:hover {
    cursor: default;
    opacity: 0.5;
 }

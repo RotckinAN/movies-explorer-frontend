@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { regex } from '../utils/regex';
 
 function useValidation() {
    const [isDirty, setIsDirty] = useState(true);
@@ -17,6 +18,22 @@ function useValidation() {
       }
    }
 
+   console.log('validationRender');
+
+   function nameInputValidation(inputData) {
+      console.log(inputData);
+
+      if (!regex.test(inputData)) {
+         setInputValid(false);
+         setIsDirty(true);
+         setInputError('Вы ввели некорретные данные для имени');
+      } else {
+         setInputValid(true);
+         setIsDirty(false);
+         setInputError('');
+      }
+   }
+
    return {
       isDirty,
       inputError,
@@ -25,6 +42,7 @@ function useValidation() {
       setIsDirty,
       setInputValid,
       setInputError,
+      nameInputValidation,
    };
 }
 

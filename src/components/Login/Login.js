@@ -2,16 +2,19 @@ import UserForm from '../UserForm/UserForm';
 import InputOfUserForm from '../InputOfUserForm/InputOfUserForm';
 import useInput from '../../hooks/useInput';
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
-function Login({ setIsInfoTooltipOpen }) {
+function Login({ onLogin, isLoggedIn }) {
    const email = useInput();
    const password = useInput();
    const [formValid, setFormValid] = useState(false);
 
    function handleSubmit(evt) {
       evt.preventDefault();
-      setIsInfoTooltipOpen(true); // временно для проверки
-      // будет код
+      onLogin({
+         email: email.value,
+         password: password.value,
+      });
    }
 
    useEffect(() => {
@@ -21,6 +24,10 @@ function Login({ setIsInfoTooltipOpen }) {
          setFormValid(false);
       }
    }, [email.inputValid, password.inputValid]);
+
+   if (isLoggedIn) {
+      return <Navigate to="/" />;
+   }
 
    return (
       <UserForm
