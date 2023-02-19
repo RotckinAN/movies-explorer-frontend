@@ -1,17 +1,35 @@
-// import Header from '../Header/Header';
 import useInput from '../../hooks/useInput';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { INPUT_EMAIL_REGEX, INPUT_NAME_REGEX } from '../../utils/regex';
+import { INPUT_EMAIL_ERROR, INPUT_NAME_ERROR } from '../../utils/errorMessages';
+import { CurrentUserContext } from '../../context/CurrentUserContext';
 
-function Profile({ submitErrorMessage, userLogout }) {
-   const name = useInput();
-   const email = useInput();
+function Profile({
+   submitErrorMessage,
+   userLogout,
+   onSubmit,
+   isSubmitButtonActive,
+   setIsSubmitButtonActive,
+   isProfileInputDisabled,
+   setIsProfileInputDisabled,
+   isSubmitButtonValidCheck,
+   setSubmitButtonIsValidCheck,
+}) {
+   const userContext = useContext(CurrentUserContext);
+   const name = useInput(userContext.name);
+   const email = useInput(userContext.email);
    const [formValid, setFormValid] = useState(false);
-   const nameInput = useRef(null);
-   const emailInput = useRef(null);
-   const editButton = useRef(null);
-   const mainLinkButton = useRef(null);
-   const saveButton = useRef(null);
+
+   const editButtonClassName = `profile__editButton ${
+      isSubmitButtonActive ? 'profile__editButton_invalid' : ''
+   }`;
+   const mainLinkButtonClassName = `profile__editButton profile__editButton_type_exit ${
+      isSubmitButtonActive ? 'profile__editButton_invalid' : ''
+   }`;
+   const saveButtonClassName = `profile__saveButton ${
+      isSubmitButtonActive ? 'profile__saveButton_invalidActive' : ''
+   } ${isSubmitButtonValidCheck ? 'profile__saveButton_active' : ''}`;
 
    const errorNameMessageClassName = `profile__input-error ${
       name.isDirty ? 'profile__input-error_active' : ''
@@ -19,7 +37,7 @@ function Profile({ submitErrorMessage, userLogout }) {
    const errorEmailMessageClassName = `profile__input-error ${
       email.isDirty ? 'profile__input-error_active' : ''
    }`;
-   const submitMessageClassName = `profile__submitErrorMessage`;
+
    const navigate = useNavigate();
 
    function handleButtonExit(evt) {
@@ -29,39 +47,37 @@ function Profile({ submitErrorMessage, userLogout }) {
    }
 
    function handleButtonEdit() {
-      nameInput.current.disabled = false;
-      emailInput.current.disabled = false;
-      editButton.current.classList.add('profile__editButton_invalid');
-      mainLinkButton.current.classList.add('profile__editButton_invalid');
-      saveButton.current.classList.add('profile__saveButton_invalidActive');
+      setIsSubmitButtonActive(true);
+      setIsProfileInputDisabled(false);
    }
 
    function handleOnSubmit(evt) {
       evt.preventDefault();
-      // будет код
+      onSubmit({
+         name: name.value,
+         email: email.value,
+      });
    }
 
    useEffect(() => {
       if (
          name.inputValid &&
          email.inputValid &&
-         name.value !== 'Виталий' &&
-         email.value !== 'pochta@yandex.ru'
+         name.value !== userContext.name &&
+         email.value !== userContext.email
       ) {
          setFormValid(true);
-         saveButton.current.classList.add('profile__saveButton_active');
+         setSubmitButtonIsValidCheck(true);
       } else {
          setFormValid(false);
-         saveButton.current.classList.remove('profile__saveButton_active');
+         setSubmitButtonIsValidCheck(false);
       }
    }, [name.inputValid, email.inputValid, name.value, email.value]);
 
    return (
       <>
-         {/*хэдер для теста */}
-         {/*<Header isLoggedIn={true} />*/}
          <main className="profile">
-            <h1 className="profile__title">Привет, Виталий!</h1>
+            <h1 className="profile__title">Привет, {userContext.name}!</h1>
             <form
                className="profile__container"
                onSubmit={handleOnSubmit}
@@ -77,14 +93,19 @@ function Profile({ submitErrorMessage, userLogout }) {
                      <input
                         className="profile__info"
                         type="text"
-                        onChange={name.handleChange}
-                        value={name.value || 'Виталий'}
+                        onChange={(evt) =>
+                           name.handleChange(
+                              evt,
+                              INPUT_NAME_REGEX,
+                              INPUT_NAME_ERROR
+                           )
+                        }
+                        value={name.value}
                         autoComplete="off"
                         id="profileName"
                         minLength="2"
                         maxLength="30"
-                        disabled
-                        ref={nameInput}
+                        disabled={isProfileInputDisabled}
                      />
                   </label>
                   <span className={errorNameMessageClassName}>
@@ -100,14 +121,19 @@ function Profile({ submitErrorMessage, userLogout }) {
                      <input
                         className="profile__info"
                         type="email"
-                        onChange={email.handleChange}
-                        value={email.value || 'pochta@yandex.ru'}
+                        onChange={(evt) =>
+                           email.handleChange(
+                              evt,
+                              INPUT_EMAIL_REGEX,
+                              INPUT_EMAIL_ERROR
+                           )
+                        }
+                        value={email.value}
                         autoComplete="off"
                         id="profileEmail"
                         minLength="2"
                         maxLength="30"
-                        disabled
-                        ref={emailInput}
+                        disabled={isProfileInputDisabled}
                      />
                   </label>
                   <span
@@ -116,34 +142,31 @@ function Profile({ submitErrorMessage, userLogout }) {
                      {email.inputError}
                   </span>
                </div>
-               <span className={submitMessageClassName}>
+               <span className="profile__submitErrorMessage">
                   {submitErrorMessage}
                </span>
                <button
-                  className="profile__saveButton"
+                  className={saveButtonClassName}
                   type="submit"
                   value="Сохранить"
                   id="profileSaveButton"
                   disabled={!formValid}
-                  ref={saveButton}
                >
                   Сохранить
                </button>
             </form>
             <button
-               className="profile__editButton"
+               className={editButtonClassName}
                type="button"
                value="Редактировать"
                id="profileEditButton"
                onClick={handleButtonEdit}
-               ref={editButton}
             >
                Редактировать
             </button>
             <button
-               className="profile__editButton profile__editButton_type_exit"
+               className={mainLinkButtonClassName}
                onClick={handleButtonExit}
-               ref={mainLinkButton}
             >
                Выйти из аккаунта
             </button>

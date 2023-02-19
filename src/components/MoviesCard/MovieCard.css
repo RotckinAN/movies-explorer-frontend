@@ -1,7 +1,7 @@
 .movieCard {
    background: #fdfdfd;
    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
-   width: fit-content;
+   /*width: fit-content;*/
    max-width: 364px;
 }
 

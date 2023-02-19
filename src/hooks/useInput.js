@@ -1,45 +1,49 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useValidation from './useValidation';
-import { regex } from '../utils/regex';
+import useLocalStorage from './useLocalStorage';
 
-function useInput() {
-   const [value, setValue] = useState('');
+function useInput(initialValue) {
+   const [value, setValue] = useState(initialValue);
+   const [localStorageSearchMovieValue, setLocalStorageSearchMovieValue] =
+      useLocalStorage('searchMovieInputValue', '');
    const {
       isDirty,
       inputError,
       inputValid,
-      validation,
-      setIsDirty,
       setInputValid,
       setInputError,
-      nameInputValidation,
+      inputValidation,
    } = useValidation();
 
-   function handleChange(evt) {
+   function handleChange(evt, pattern, textError) {
       setValue(evt.target.value);
-      validation(evt.target);
+      inputValidation(evt.target.value, pattern, textError);
    }
 
-   function handleChangeInputName(evt) {
-      setValue(evt.target.value);
-      // nameInputValidation(evt.target);
+   function handleChangeToLocalStorage(evt, pattern, textError) {
+      setLocalStorageSearchMovieValue(evt.target.value);
+      inputValidation(evt.target.value, pattern, textError);
    }
 
-   useEffect(() => {
-      nameInputValidation(value);
-   }, [value]);
+   function onBlur(errorMessage, inputValue) {
+      if (!inputValue) {
+         setInputError(errorMessage);
+         setInputValid(false);
+      }
+   }
 
    return {
       value,
-      handleChange,
+      localStorageSearchMovieValue,
       setValue,
+      setLocalStorageSearchMovieValue,
       isDirty,
-      setIsDirty,
       inputError,
-      setInputError,
       inputValid,
       setInputValid,
-      handleChangeInputName,
+      handleChange,
+      handleChangeToLocalStorage,
+      onBlur,
    };
 }
 

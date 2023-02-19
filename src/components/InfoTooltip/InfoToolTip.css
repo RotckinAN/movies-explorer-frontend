@@ -11,6 +11,7 @@
    transition: visibility 0.3s linear, opacity 0.3s linear;
    opacity: 0;
    visibility: hidden;
+   z-index: 10;
 }
 
 .popup_opened {

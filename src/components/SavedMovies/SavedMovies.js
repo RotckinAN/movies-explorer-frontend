@@ -1,38 +1,81 @@
-// import Header from '../Header/Header';
-// import Footer from '../Footer/Footer';
 import SearchForm from '../SearchForm/SearchForm';
 import useInput from '../../hooks/useInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import { savedMovies } from '../../utils/savedMovies';
+import { INPUT_MOVIE_SEARCH_REGEX } from '../../utils/regex';
+import {
+   EMPTY_MOVIES_SEARCH_INPUT,
+   INPUT_MOVIE_SEARCH_ERROR,
+} from '../../utils/errorMessages';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
-function SavedMovies() {
+function SavedMovies({
+   setIsMovieSearchInvalid,
+   isMovieSearchInvalid,
+   requestMoviesErrorMessage,
+   savedFavoriteMovies,
+   onMovieDelete,
+   onSubmit,
+   filteredFavoriteMovies,
+   isFiltered,
+}) {
    const movie = useInput();
-   const [isMovieFavoriteSearchValid, setIsMovieFavoriteSearchValid] =
-      useState(false);
+   const [isFormValid, setIsFormValid] = useState(false);
+   const [checkedCheckBox, setCheckedCheckBox] = useLocalStorage(
+      'savedMoviesChecked',
+      false
+   );
 
    function handleSubmit(evt) {
       evt.preventDefault();
-      setIsMovieFavoriteSearchValid(true);
-      // будет код
+      onSubmit(movie.value, checkedCheckBox);
    }
+
+   function handleChange(evt) {
+      movie.handleChange(
+         evt,
+         INPUT_MOVIE_SEARCH_REGEX,
+         INPUT_MOVIE_SEARCH_ERROR
+      );
+      if (!evt.target.value) {
+         setIsMovieSearchInvalid(true);
+      } else {
+         setIsMovieSearchInvalid(false);
+      }
+   }
+
+   useEffect(() => {
+      if (movie.inputValid) {
+         setIsFormValid(true);
+      } else {
+         setIsFormValid(false);
+      }
+   }, [movie.inputValid]);
 
    return (
       <main className="savedMovies">
-         {/*хэдер для теста */}
-         {/*<Header isLoggedIn={true} />*/}
          <SearchForm
             id="inputSearchFavoriteMovie"
-            onChange={movie.handleChange}
+            onChange={(evt) => handleChange(evt)}
+            onBlur={() => movie.onBlur(EMPTY_MOVIES_SEARCH_INPUT, movie.value)}
             value={movie.value || ''}
             inputName="searchFavoriteMovie"
-            isDirty={isMovieFavoriteSearchValid}
-            errorMessage="Нужно ввести ключевое слово"
+            isMovieSearchInvalid={isMovieSearchInvalid}
+            setIsMovieSearchInvalid={setIsMovieSearchInvalid}
+            errorMessage={movie.inputError || requestMoviesErrorMessage}
             name="searchFavoriteMovie"
             onSubmit={handleSubmit}
+            isFormValid={isFormValid}
+            checkedCheckBox={checkedCheckBox}
+            setCheckedCheckBox={setCheckedCheckBox}
          />
-         <MoviesCardList movies={savedMovies} cardType="savedMovie" />
-         {/*<Footer />*/}
+         <MoviesCardList
+            movies={isFiltered ? filteredFavoriteMovies : savedFavoriteMovies}
+            cardType="savedMovie"
+            onMovieDelete={onMovieDelete}
+            isChecked={checkedCheckBox}
+            savedFavoriteMovies={savedFavoriteMovies}
+         />
       </main>
    );
 }
