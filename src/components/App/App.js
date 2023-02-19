@@ -372,9 +372,11 @@ function App() {
    };
 
    useEffect(() => {
-      getFavoriteMoviesByRequest().catch((err) => {
-         console.error(err);
-      });
+      if (isLoggedIn) {
+         getFavoriteMoviesByRequest().catch((err) => {
+            console.error(err);
+         });
+      }
    }, [isLoggedIn]);
 
    function closeAllPopups() {
