@@ -59,11 +59,8 @@ function App() {
    const [isLoadingMoviesRequest, setIsLoadingMoviesRequest] = useState(false);
    const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
    const [isLoggedInImage, setIsLoggedInImage] = useState(false);
-   const [isSubmitButtonActive, setIsSubmitButtonActive] = useState(false);
    const [isAddMoviesButtonActive, setIsAddMoviesButtonActive] = useState(true);
-   const [isSubmitButtonValidCheck, setSubmitButtonIsValidCheck] =
-      useState(false);
-   const [isProfileInputDisabled, setIsProfileInputDisabled] = useState(true);
+   useState(false);
    const [isMovieSearchInvalid, setIsMovieSearchInvalid] = useState(false);
    const [infoTooltipText, setInfoTooltipText] = useState('');
    const [requestRegisterErrorMessage, setRequestRegisterErrorMessage] =
@@ -73,10 +70,13 @@ function App() {
       useState('');
    const [requestMoviesErrorMessage, setRequestMoviesErrorMessage] =
       useState('');
+   const [initialMoviesByRequest, setInitialMoviesByRequest] = useLocalStorage(
+      'initialMovies',
+      []
+   );
    const [movies, setMovies] = useLocalStorage('movies', []);
    const [savedFavoriteMovies, setSavedFavoriteMovies] = useState([]);
    const [filteredFavoriteMovies, setFilteredFavoriteMovies] = useState([]);
-   const [isFiltered, setIsFiltered] = useState(false);
    const navigate = useNavigate();
 
    const userRegister = useCallback(
@@ -97,7 +97,7 @@ function App() {
                const response = await res.json();
                setIsLoggedIn(true);
                setCurrentUser(response);
-               navigate('/');
+               navigate('/movies');
             }
          } catch (err) {
             setRequestLoginErrorMessage('Invalid credentials');
@@ -119,7 +119,7 @@ function App() {
 
             if (data.ok) {
                setIsLoggedIn(true);
-               navigate('/');
+               navigate('/movies');
             } else if (!data.ok) {
                setRequestLoginErrorMessage(userByResponse.message);
                throw new Error(
@@ -165,16 +165,21 @@ function App() {
       });
    }, [handleTokenCheck, isLoggedIn]);
 
-   const userLogout = useCallback(async () => {
+   const userLogout = async () => {
       try {
          const logOutUser = await logOut();
          if (logOutUser) {
             setIsLoggedIn(false);
+            localStorage.clear();
+            setInitialMoviesByRequest([]);
+            setMovies([]);
+            setSavedFavoriteMovies([]);
+            setFilteredFavoriteMovies([]);
          }
       } catch (err) {
          throw new Error('Invalid credentials');
       }
-   }, []);
+   };
 
    const handleUpdateUser = async (userInfo) => {
       try {
@@ -193,9 +198,6 @@ function App() {
             setCurrentUser(response);
             setIsInfoTooltipOpen(true);
             setIsLoggedInImage(true);
-            setIsProfileInputDisabled(true);
-            setIsSubmitButtonActive(false);
-            setSubmitButtonIsValidCheck(false);
             setRequestEditUserInfoErrorMessage('');
             setInfoTooltipText('Данные пользователя успешно обновлены');
             navigate('/profile');
@@ -205,50 +207,69 @@ function App() {
       }
    };
 
-   const getInitialMoviesByRequest = async (searchData) => {
-      setIsLoadingMoviesRequest(true);
-
-      try {
-         const moviesBYRequest = await getInitialMovies();
-         if (!moviesBYRequest) {
-            throw new Error(BAD_REQUEST_MOVIES_SEARCH);
+   const searchMoviesInStorage = useCallback(
+      (moviesStorage, searchData) => {
+         const searchResult = findMovies(moviesStorage, searchData);
+         if (searchResult.length === 0) {
+            setIsMovieSearchInvalid(true);
+            setRequestMoviesErrorMessage(NOTHING_FOUND);
+            setMovies([]);
+         } else {
+            setMovies(searchResult);
+            setIsMovieSearchInvalid(false);
+            setRequestMoviesErrorMessage('');
          }
+      },
+      [setMovies]
+   );
 
-         const response = await moviesBYRequest.json();
+   const getInitialMoviesByRequest = useCallback(
+      async (searchData) => {
+         setIsLoadingMoviesRequest(true);
 
-         if (moviesBYRequest.ok) {
-            const searchResult = findMovies(response, searchData);
+         try {
+            if (initialMoviesByRequest.length === 0) {
+               const moviesBYRequest = await getInitialMovies();
 
-            if (searchResult.length === 0) {
-               setIsMovieSearchInvalid(true);
-               setRequestMoviesErrorMessage(NOTHING_FOUND);
-               setMovies([]);
+               if (!moviesBYRequest) {
+                  throw new Error(BAD_REQUEST_MOVIES_SEARCH);
+               }
+               if (moviesBYRequest.ok) {
+                  const response = await moviesBYRequest.json();
+                  setInitialMoviesByRequest(response);
+
+                  searchMoviesInStorage(response, searchData);
+               } else if (!moviesBYRequest.ok) {
+                  setIsMovieSearchInvalid(true);
+                  setRequestMoviesErrorMessage(BAD_REQUEST_MOVIES_SEARCH);
+                  setMovies([]);
+                  throw new Error(
+                     `Произошла ошибка, код ошибки: ${moviesBYRequest.status}. Причина: ${moviesBYRequest.statusText}`
+                  );
+               }
             } else {
-               setMovies(searchResult);
-               setIsMovieSearchInvalid(false);
-               setRequestMoviesErrorMessage('');
+               searchMoviesInStorage(initialMoviesByRequest, searchData);
             }
-         } else if (!moviesBYRequest.ok) {
+         } catch (err) {
             setIsMovieSearchInvalid(true);
             setRequestMoviesErrorMessage(BAD_REQUEST_MOVIES_SEARCH);
             setMovies([]);
-            throw new Error(
-               `Произошла ошибка, код ошибки: ${moviesBYRequest.status}. Причина: ${moviesBYRequest.statusText}`
-            );
+            throw new Error('Произошла ошибка запроса данных');
+         } finally {
+            setIsLoadingMoviesRequest(false);
          }
-      } catch (err) {
-         setIsMovieSearchInvalid(true);
-         setRequestMoviesErrorMessage(BAD_REQUEST_MOVIES_SEARCH);
-         setMovies([]);
-         throw new Error('Произошла ошибка запроса данных');
-      } finally {
-         setIsLoadingMoviesRequest(false);
-      }
-   };
+      },
+      [
+         initialMoviesByRequest,
+         searchMoviesInStorage,
+         setInitialMoviesByRequest,
+         setMovies,
+      ]
+   );
 
-   const handleSearchFilm = (value, checkBoxPosition) => {
+   const handleSearchFilm = (value) => {
       if (value) {
-         getInitialMoviesByRequest(value, checkBoxPosition).catch((err) => {
+         getInitialMoviesByRequest(value).catch((err) => {
             console.error(err);
          });
       } else {
@@ -334,13 +355,16 @@ function App() {
       }
    };
 
-   const getFavoriteMoviesByRequest = async () => {
+   const getFavoriteMoviesByRequest = useCallback(async () => {
       try {
          const savedMovies = await getFavoriteMovies();
 
          if (savedMovies.ok) {
             const response = await savedMovies.json();
-            setSavedFavoriteMovies(response);
+
+            setSavedFavoriteMovies(
+               response.filter((movie) => movie.owner === currentUser._id)
+            );
          } else {
             setSavedFavoriteMovies([]);
             throw new Error(
@@ -350,15 +374,10 @@ function App() {
       } catch (err) {
          throw new Error('Произошла ошибка запроса данных');
       }
-   };
+   }, [currentUser]);
 
-   const handleSearchMovieSaved = (searchData, checkBoxPosition) => {
-      const searchResult = findMovies(
-         savedFavoriteMovies,
-         searchData,
-         checkBoxPosition
-      );
-      setIsFiltered(true);
+   const handleSearchMovieSaved = (searchData) => {
+      const searchResult = findMovies(savedFavoriteMovies, searchData);
 
       if (searchResult.length === 0) {
          setIsMovieSearchInvalid(true);
@@ -377,7 +396,7 @@ function App() {
             console.error(err);
          });
       }
-   }, [isLoggedIn]);
+   }, [isLoggedIn, getFavoriteMoviesByRequest]);
 
    function closeAllPopups() {
       setIsInfoTooltipOpen(false);
@@ -434,7 +453,6 @@ function App() {
                               onMovieDelete={handleDeleteSavedMovie}
                               onSubmit={handleSearchMovieSaved}
                               filteredFavoriteMovies={filteredFavoriteMovies}
-                              isFiltered={isFiltered}
                            />
                         }
                      />
@@ -454,18 +472,6 @@ function App() {
                               }
                               userLogout={userLogout}
                               onSubmit={handleUpdateUser}
-                              isSubmitButtonActive={isSubmitButtonActive}
-                              setIsSubmitButtonActive={setIsSubmitButtonActive}
-                              isProfileInputDisabled={isProfileInputDisabled}
-                              setIsProfileInputDisabled={
-                                 setIsProfileInputDisabled
-                              }
-                              isSubmitButtonValidCheck={
-                                 isSubmitButtonValidCheck
-                              }
-                              setSubmitButtonIsValidCheck={
-                                 setSubmitButtonIsValidCheck
-                              }
                            />
                         }
                      />
@@ -487,6 +493,7 @@ function App() {
                         requestRegisterErrorMessage={
                            requestRegisterErrorMessage
                         }
+                        isLoggedIn={isLoggedIn}
                      />
                   }
                />
@@ -496,8 +503,8 @@ function App() {
                   element={
                      <Login
                         onLogin={userLogin}
-                        isLoggedIn={isLoggedIn}
                         requestLoginErrorMessage={requestLoginErrorMessage}
+                        isLoggedIn={isLoggedIn}
                      />
                   }
                />

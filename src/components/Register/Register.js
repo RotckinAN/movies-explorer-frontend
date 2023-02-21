@@ -13,8 +13,9 @@ import {
    INPUT_NAME_ERROR,
    INPUT_PASSWORD_ERROR,
 } from '../../utils/errorMessages';
+import { Navigate } from 'react-router-dom';
 
-function Register({ onRegister, requestRegisterErrorMessage }) {
+function Register({ onRegister, requestRegisterErrorMessage, isLoggedIn }) {
    const name = useInput('');
    const email = useInput('');
    const password = useInput('');
@@ -36,6 +37,10 @@ function Register({ onRegister, requestRegisterErrorMessage }) {
          setFormValid(false);
       }
    }, [name.inputValid, email.inputValid, password.inputValid]);
+
+   if (isLoggedIn) {
+      return <Navigate to={'/'} />;
+   }
 
    return (
       <UserForm

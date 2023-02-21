@@ -5,39 +5,23 @@ import { INPUT_EMAIL_REGEX, INPUT_NAME_REGEX } from '../../utils/regex';
 import { INPUT_EMAIL_ERROR, INPUT_NAME_ERROR } from '../../utils/errorMessages';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 
-function Profile({
-   submitErrorMessage,
-   userLogout,
-   onSubmit,
-   isSubmitButtonActive,
-   setIsSubmitButtonActive,
-   isProfileInputDisabled,
-   setIsProfileInputDisabled,
-   isSubmitButtonValidCheck,
-   setSubmitButtonIsValidCheck,
-}) {
+function Profile({ submitErrorMessage, userLogout, onSubmit }) {
    const userContext = useContext(CurrentUserContext);
    const name = useInput(userContext.name);
    const email = useInput(userContext.email);
    const [formValid, setFormValid] = useState(false);
+   const [isNameValueOnFocus, setIsNameValueOnFocus] = useState(false);
+   const [isEmailValueOnFocus, setIsEmailValueOnFocus] = useState(false);
 
    const editButtonClassName = `profile__editButton ${
-      isSubmitButtonActive ? 'profile__editButton_invalid' : ''
-   }`;
-   const mainLinkButtonClassName = `profile__editButton profile__editButton_type_exit ${
-      isSubmitButtonActive ? 'profile__editButton_invalid' : ''
-   }`;
-   const saveButtonClassName = `profile__saveButton ${
-      isSubmitButtonActive ? 'profile__saveButton_invalidActive' : ''
-   } ${isSubmitButtonValidCheck ? 'profile__saveButton_active' : ''}`;
-
+      formValid ? 'profile__editButton_active' : ''
+   } `;
    const errorNameMessageClassName = `profile__input-error ${
       name.isDirty ? 'profile__input-error_active' : ''
    }`;
    const errorEmailMessageClassName = `profile__input-error ${
       email.isDirty ? 'profile__input-error_active' : ''
    }`;
-
    const navigate = useNavigate();
 
    function handleButtonExit(evt) {
@@ -46,33 +30,58 @@ function Profile({
       navigate('/');
    }
 
-   function handleButtonEdit() {
-      setIsSubmitButtonActive(true);
-      setIsProfileInputDisabled(false);
-   }
-
    function handleOnSubmit(evt) {
       evt.preventDefault();
       onSubmit({
          name: name.value,
          email: email.value,
       });
+      setFormValid(false);
+      setIsNameValueOnFocus(false);
+      setIsEmailValueOnFocus(false);
+      name.setInputInFocus(false);
+      email.setInputInFocus(false);
    }
 
    useEffect(() => {
+      if (name.inputInFocus === 'name') {
+         setIsNameValueOnFocus(true);
+      }
+      if (email.inputInFocus === 'email') {
+         setIsEmailValueOnFocus(true);
+      }
+   }, [name.inputInFocus, email.inputInFocus]);
+
+   useEffect(() => {
       if (
-         name.inputValid &&
-         email.inputValid &&
-         name.value !== userContext.name &&
-         email.value !== userContext.email
+         (!isEmailValueOnFocus &&
+            name.inputValid &&
+            name.value !== userContext.name) ||
+         (!isNameValueOnFocus &&
+            email.inputValid &&
+            email.value !== userContext.email) ||
+         (isEmailValueOnFocus &&
+            isNameValueOnFocus &&
+            name.value !== userContext.name &&
+            email.value !== userContext.email &&
+            email.inputValid &&
+            email.value)
       ) {
          setFormValid(true);
-         setSubmitButtonIsValidCheck(true);
       } else {
          setFormValid(false);
-         setSubmitButtonIsValidCheck(false);
       }
-   }, [name.inputValid, email.inputValid, name.value, email.value]);
+   }, [
+      name.value,
+      email.value,
+      name.inputValid,
+      email.inputValid,
+      userContext.name,
+      userContext.email,
+      isEmailValueOnFocus,
+      isNameValueOnFocus,
+      formValid,
+   ]);
 
    return (
       <>
@@ -93,6 +102,7 @@ function Profile({
                      <input
                         className="profile__info"
                         type="text"
+                        name="name"
                         onChange={(evt) =>
                            name.handleChange(
                               evt,
@@ -105,7 +115,7 @@ function Profile({
                         id="profileName"
                         minLength="2"
                         maxLength="30"
-                        disabled={isProfileInputDisabled}
+                        onFocus={(evt) => name.onFocus(evt)}
                      />
                   </label>
                   <span className={errorNameMessageClassName}>
@@ -121,6 +131,7 @@ function Profile({
                      <input
                         className="profile__info"
                         type="email"
+                        name="email"
                         onChange={(evt) =>
                            email.handleChange(
                               evt,
@@ -133,7 +144,7 @@ function Profile({
                         id="profileEmail"
                         minLength="2"
                         maxLength="30"
-                        disabled={isProfileInputDisabled}
+                        onFocus={(evt) => email.onFocus(evt)}
                      />
                   </label>
                   <span
@@ -146,26 +157,17 @@ function Profile({
                   {submitErrorMessage}
                </span>
                <button
-                  className={saveButtonClassName}
+                  className={editButtonClassName}
                   type="submit"
-                  value="Сохранить"
-                  id="profileSaveButton"
+                  value="Редактировать"
+                  id="profileEditButton"
                   disabled={!formValid}
                >
-                  Сохранить
+                  Редактировать
                </button>
             </form>
             <button
-               className={editButtonClassName}
-               type="button"
-               value="Редактировать"
-               id="profileEditButton"
-               onClick={handleButtonEdit}
-            >
-               Редактировать
-            </button>
-            <button
-               className={mainLinkButtonClassName}
+               className="profile__editButton profile__editButton_type_exit"
                onClick={handleButtonExit}
             >
                Выйти из аккаунта

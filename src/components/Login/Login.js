@@ -8,8 +8,9 @@ import {
    INPUT_EMAIL_ERROR,
    INPUT_PASSWORD_ERROR,
 } from '../../utils/errorMessages';
+import { Navigate } from 'react-router-dom';
 
-function Login({ onLogin, requestLoginErrorMessage }) {
+function Login({ onLogin, requestLoginErrorMessage, isLoggedIn }) {
    const email = useInput('');
    const password = useInput('');
    const [formValid, setFormValid] = useState(false);
@@ -29,6 +30,10 @@ function Login({ onLogin, requestLoginErrorMessage }) {
          setFormValid(false);
       }
    }, [email.inputValid, password.inputValid]);
+
+   if (isLoggedIn) {
+      return <Navigate to={'/'} />;
+   }
 
    return (
       <UserForm

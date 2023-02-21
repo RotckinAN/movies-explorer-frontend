@@ -67,11 +67,18 @@ const MovieCard = ({
                onClick={handleDeleteButtonClick}
             ></button>
          </div>
-         <img
-            src={imageLink}
-            alt={`Movie: '${nameRU}'`}
-            className="movieCard__mainImage"
-         />
+         <a
+            href={movie.trailerLink}
+            target="_blank"
+            rel="noreferrer"
+            title="Посмотреть трейлер фильма"
+         >
+            <img
+               src={imageLink}
+               alt={`Movie: '${nameRU}'`}
+               className="movieCard__mainImage"
+            />
+         </a>
       </li>
    );
 };

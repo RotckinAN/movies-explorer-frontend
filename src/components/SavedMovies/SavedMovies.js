@@ -17,7 +17,6 @@ function SavedMovies({
    onMovieDelete,
    onSubmit,
    filteredFavoriteMovies,
-   isFiltered,
 }) {
    const movie = useInput();
    const [isFormValid, setIsFormValid] = useState(false);
@@ -25,10 +24,12 @@ function SavedMovies({
       'savedMoviesChecked',
       false
    );
+   const [isFiltered, setIsFiltered] = useState(false);
 
    function handleSubmit(evt) {
       evt.preventDefault();
       onSubmit(movie.value, checkedCheckBox);
+      setIsFiltered(true);
    }
 
    function handleChange(evt) {

@@ -6,6 +6,7 @@ function useInput(initialValue) {
    const [value, setValue] = useState(initialValue);
    const [localStorageSearchMovieValue, setLocalStorageSearchMovieValue] =
       useLocalStorage('searchMovieInputValue', '');
+   const [inputInFocus, setInputInFocus] = useState({});
    const {
       isDirty,
       inputError,
@@ -32,6 +33,10 @@ function useInput(initialValue) {
       }
    }
 
+   function onFocus(evt) {
+      setInputInFocus(evt.target.name);
+   }
+
    return {
       value,
       localStorageSearchMovieValue,
@@ -44,6 +49,9 @@ function useInput(initialValue) {
       handleChange,
       handleChangeToLocalStorage,
       onBlur,
+      onFocus,
+      inputInFocus,
+      setInputInFocus,
    };
 }
 

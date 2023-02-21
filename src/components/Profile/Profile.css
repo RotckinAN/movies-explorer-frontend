@@ -81,7 +81,6 @@
    font-weight: 400;
    font-size: 11px;
    line-height: 13px;
-   /*margin: 0 auto;*/
    color: #ff004c;
    display: block;
    text-align: center;
@@ -99,41 +98,15 @@
    height: 16px;
    padding: 0;
    margin: 0 auto;
-   opacity: 1;
    transition: 0.3s;
 }
 
-.profile__editButton_invalid {
-   display: none;
+.profile__editButton_inactive {
+   opacity: 0.7;
 }
 
-.profile__saveButton {
-   display: none;
-   width: 100%;
-   background: #3456f3;
-   border-radius: 3px;
-   border: 0;
-   align-items: center;
-   justify-content: center;
-   color: #fff;
-   font-size: 14px;
-   line-height: 17px;
-   font-weight: 500;
-   height: 45px;
-   margin: 0 0 3px;
-   padding: 0;
-   text-align: center;
-   opacity: 1;
-   transition: 0.3s;
-}
-
-.profile__saveButton_invalidActive {
-   display: flex;
-   opacity: 0.5;
-}
-
-.profile__saveButton_active {
-   display: flex;
+.profile__editButton_type_exit,
+.profile__editButton_active {
    opacity: 1;
 }
 
@@ -144,14 +117,14 @@
 }
 
 .profile__editButton:hover {
+   cursor: default;
+}
+
+.profile__editButton_active:hover,
+.profile__editButton_type_exit:hover {
    cursor: pointer;
    opacity: 0.7;
    transition: 0.3s;
-}
-
-.profile__saveButton_invalid:hover {
-   cursor: default;
-   opacity: 0.5;
 }
 
 @media screen and (max-width: 450px) {
