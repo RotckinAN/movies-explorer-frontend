@@ -33,6 +33,19 @@
    justify-content: center;
 }
 
+.userForm__errorMessage {
+   display: block;
+   font-size: 11px;
+   line-height: 13px;
+   color: #ff004c;
+   margin: 10px 0 20px;
+   min-height: 26px;
+   width: 100%;
+   text-align: center;
+   text-overflow: ellipsis;
+   overflow: hidden;
+}
+
 .userFrom__saveButton {
    width: 100%;
    background: #3456f3;
@@ -43,15 +56,15 @@
    line-height: 17px;
    font-weight: 500;
    height: 45px;
-   margin: 40px 0 0;
+   margin: 0;
    padding: 0;
    text-align: center;
    opacity: 1;
    transition: 0.3s;
 }
 
-.userFrom__saveButton_type_login {
-   margin-top: 150px;
+.userForm__errorMessage_type_login {
+   margin-top: 120px;
 }
 
 .userFrom__saveButton:hover {
@@ -110,12 +123,12 @@
       margin: 50px 0 80px;
    }
 
-   .userFrom__saveButton {
-      margin-top: 135px;
+   .userForm__errorMessage {
+      margin-top: 89px;
    }
 
-   .userFrom__saveButton_type_login {
-      margin-top: 245px;
+   .userForm__errorMessage_type_login {
+      margin-top: 198px;
    }
 
    .userForm__additionalTextContainer {

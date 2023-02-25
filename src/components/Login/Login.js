@@ -2,16 +2,25 @@ import UserForm from '../UserForm/UserForm';
 import InputOfUserForm from '../InputOfUserForm/InputOfUserForm';
 import useInput from '../../hooks/useInput';
 import { useEffect, useState } from 'react';
+import { INPUT_EMAIL_REGEX, INPUT_PASSWORD_REGEX } from '../../utils/regex';
+import {
+   EMPTY_FORM_INPUTS,
+   INPUT_EMAIL_ERROR,
+   INPUT_PASSWORD_ERROR,
+} from '../../utils/errorMessages';
+import { Navigate } from 'react-router-dom';
 
-function Login({ setIsInfoTooltipOpen }) {
-   const email = useInput();
-   const password = useInput();
+function Login({ onLogin, requestLoginErrorMessage, isLoggedIn }) {
+   const email = useInput('');
+   const password = useInput('');
    const [formValid, setFormValid] = useState(false);
 
    function handleSubmit(evt) {
       evt.preventDefault();
-      setIsInfoTooltipOpen(true); // временно для проверки
-      // будет код
+      onLogin({
+         email: email.value,
+         password: password.value,
+      });
    }
 
    useEffect(() => {
@@ -21,6 +30,10 @@ function Login({ setIsInfoTooltipOpen }) {
          setFormValid(false);
       }
    }, [email.inputValid, password.inputValid]);
+
+   if (isLoggedIn) {
+      return <Navigate to={'/'} />;
+   }
 
    return (
       <UserForm
@@ -34,28 +47,36 @@ function Login({ setIsInfoTooltipOpen }) {
          linkText="Регистрация"
          additionalClassName="userFrom__saveButton_type_login"
          typeClassName="login"
+         errorMessage={requestLoginErrorMessage}
       >
          <InputOfUserForm
             id="inputLoginEmail"
             labelName="E-mail"
             type="email"
-            onChange={email.handleChange}
+            onChange={(evt) =>
+               email.handleChange(evt, INPUT_EMAIL_REGEX, INPUT_EMAIL_ERROR)
+            }
+            onBlur={() => email.onBlur(EMPTY_FORM_INPUTS, email.value)}
             value={email.value || ''}
             inputName="loginEmail"
             isDirty={email.isDirty}
-            minLength="2"
-            maxLength="30"
             errorMessage={email.inputError}
          />
          <InputOfUserForm
             id="inputLoginPassword"
             labelName="Пароль"
             type="password"
-            onChange={password.handleChange}
+            onChange={(evt) =>
+               password.handleChange(
+                  evt,
+                  INPUT_PASSWORD_REGEX,
+                  INPUT_PASSWORD_ERROR
+               )
+            }
+            onBlur={() => password.onBlur(EMPTY_FORM_INPUTS, password.value)}
             value={password.value || ''}
             inputName="loginPassword"
             isDirty={password.isDirty}
-            minLength="2"
             errorMessage={password.inputError}
          />
       </UserForm>

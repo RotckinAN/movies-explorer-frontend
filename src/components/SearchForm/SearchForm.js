@@ -2,18 +2,36 @@ import React from 'react';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
 function SearchForm({
-   onSubmit,
-   name,
+   id,
    onChange,
+   onBlur,
    value,
    inputName,
-   id,
+   isMovieSearchInvalid,
+   setIsMovieSearchInvalid,
    errorMessage,
-   isDirty,
+   name,
+   onSubmit,
+   isFormValid,
+   checkedCheckBox,
+   setCheckedCheckBox,
 }) {
    const errorMessageClassName = `searchForm__input-error ${
-      isDirty ? 'searchForm__input-error_active' : ''
+      isMovieSearchInvalid ? 'searchForm__input-error_active' : ''
    }`;
+   const buttonClassName = `searchForm__searchButton ${
+      isFormValid ? '' : 'searchForm__searchButton_invalid'
+   }`;
+
+   function handleOnBlur(evt) {
+      onBlur();
+
+      if (!evt.target.value) {
+         setIsMovieSearchInvalid(true);
+      } else {
+         setIsMovieSearchInvalid(false);
+      }
+   }
 
    return (
       <section className="searchForm">
@@ -29,6 +47,7 @@ function SearchForm({
                   type="text"
                   className="searchForm__item"
                   onChange={onChange}
+                  onBlur={(evt) => handleOnBlur(evt)}
                   value={value}
                   name={inputName}
                   autoComplete="off"
@@ -41,14 +60,19 @@ function SearchForm({
                type="submit"
                value="Найти"
                aria-label={name}
-               className="searchForm__searchButton"
+               className={buttonClassName}
                id={`${name}-searchButton`}
+               disabled={!isFormValid}
             >
                Найти
             </button>
             <span className={errorMessageClassName}>{errorMessage}</span>
          </form>
-         <FilterCheckbox id="searchMovieFilter" />
+         <FilterCheckbox
+            id="searchMovieFilter"
+            checkedCheckBox={checkedCheckBox}
+            setCheckedCheckBox={setCheckedCheckBox}
+         />
       </section>
    );
 }

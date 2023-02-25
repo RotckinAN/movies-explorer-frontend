@@ -1,33 +1,57 @@
 import { useState } from 'react';
 import useValidation from './useValidation';
+import useLocalStorage from './useLocalStorage';
 
-function useInput() {
-   const [value, setValue] = useState('');
+function useInput(initialValue) {
+   const [value, setValue] = useState(initialValue);
+   const [localStorageSearchMovieValue, setLocalStorageSearchMovieValue] =
+      useLocalStorage('searchMovieInputValue', '');
+   const [inputInFocus, setInputInFocus] = useState({});
    const {
       isDirty,
       inputError,
       inputValid,
-      validation,
-      setIsDirty,
       setInputValid,
       setInputError,
+      inputValidation,
    } = useValidation();
 
-   function handleChange(evt) {
+   function handleChange(evt, pattern, textError) {
       setValue(evt.target.value);
-      validation(evt.target);
+      inputValidation(evt.target.value, pattern, textError);
+   }
+
+   function handleChangeToLocalStorage(evt, pattern, textError) {
+      setLocalStorageSearchMovieValue(evt.target.value);
+      inputValidation(evt.target.value, pattern, textError);
+   }
+
+   function onBlur(errorMessage, inputValue) {
+      if (!inputValue) {
+         setInputError(errorMessage);
+         setInputValid(false);
+      }
+   }
+
+   function onFocus(evt) {
+      setInputInFocus(evt.target.name);
    }
 
    return {
       value,
-      handleChange,
+      localStorageSearchMovieValue,
       setValue,
+      setLocalStorageSearchMovieValue,
       isDirty,
-      setIsDirty,
       inputError,
-      setInputError,
       inputValid,
       setInputValid,
+      handleChange,
+      handleChangeToLocalStorage,
+      onBlur,
+      onFocus,
+      inputInFocus,
+      setInputInFocus,
    };
 }
 

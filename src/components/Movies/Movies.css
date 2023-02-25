@@ -26,6 +26,10 @@
    transition: opacity 0.3s;
 }
 
+.movies__addButton_inactive {
+   display: none;
+}
+
 .movies__addButton:hover {
    opacity: 0.7;
 }

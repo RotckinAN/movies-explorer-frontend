@@ -3,11 +3,10 @@ function InputOfUserForm({
    labelName,
    type,
    onChange,
+   onBlur,
    value,
    inputName,
    isDirty,
-   minLength,
-   maxLength,
    errorMessage,
 }) {
    const inputClassName = `inputOfUserForm__item inputOfUserForm__item_inputType_${inputName} ${
@@ -26,13 +25,12 @@ function InputOfUserForm({
          <input
             type={type}
             onChange={onChange}
+            onBlur={onBlur}
             value={value}
             name={inputName}
             className={inputClassName}
             autoComplete="off"
             id={id}
-            minLength={minLength}
-            maxLength={maxLength}
             required
          />
          <span className={errorMessageClassName}>{errorMessage}</span>

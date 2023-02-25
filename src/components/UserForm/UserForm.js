@@ -11,10 +11,12 @@ function UserForm({
    link,
    linkText,
    typeClassName,
+   errorMessage,
 }) {
-   const buttonClassName = `userFrom__saveButton userFrom__saveButton_type_${typeClassName} ${
+   const buttonClassName = `userFrom__saveButton ${
       isFormValid ? '' : 'userForm__saveButton_invalid'
    }`;
+   const errorMessageClassName = `userForm__errorMessage userForm__errorMessage_type_${typeClassName}`;
 
    return (
       <main className="userForm">
@@ -27,6 +29,7 @@ function UserForm({
             noValidate
          >
             {children}
+            <span className={errorMessageClassName}>{errorMessage}</span>
             <button
                type="submit"
                value={buttonText}

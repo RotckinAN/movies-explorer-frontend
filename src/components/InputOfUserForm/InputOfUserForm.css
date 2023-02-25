@@ -37,6 +37,8 @@
    margin: 8px 0 8px;
    min-height: 24px;
    width: 100%;
+   text-overflow: ellipsis;
+   overflow: hidden;
 }
 
 @media screen and (max-width: 450px) {

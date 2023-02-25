@@ -8,7 +8,6 @@ function InfoTooltip({ loggedIn, name, isOpen, onClose, infoText }) {
    return (
       <div
          className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}
-         // className={`popup popup_type_${name} `}
       >
          <div className="popup__container">
             <button

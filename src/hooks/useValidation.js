@@ -1,15 +1,15 @@
 import { useState } from 'react';
 
 function useValidation() {
-   const [isDirty, setIsDirty] = useState(true);
+   const [isDirty, setIsDirty] = useState(false);
    const [inputError, setInputError] = useState('');
    const [inputValid, setInputValid] = useState(false);
 
-   function validation(value) {
-      if (!value.validity.valid) {
+   function inputValidation(inputData, pattern, textError) {
+      if (!pattern.test(inputData)) {
          setInputValid(false);
          setIsDirty(true);
-         setInputError(value.validationMessage);
+         setInputError(textError);
       } else {
          setInputValid(true);
          setIsDirty(false);
@@ -21,10 +21,9 @@ function useValidation() {
       isDirty,
       inputError,
       inputValid,
-      validation,
-      setIsDirty,
       setInputValid,
       setInputError,
+      inputValidation,
    };
 }
 

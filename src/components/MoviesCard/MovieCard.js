@@ -1,29 +1,52 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const MovieCard = ({ cardType, nameRU, duration, imageLink }) => {
-   const [isFavorite, setIsFavorite] = useState(false);
+const MovieCard = ({
+   movie,
+   cardType,
+   nameRU,
+   duration,
+   imageLink,
+   onMovieSave,
+   onMovieDelete,
+   savedFavoriteMovies,
+}) => {
+   const isSaved =
+      cardType === 'searchMovie'
+         ? savedFavoriteMovies.find(
+              (saveMovie) => saveMovie.movieId === movie.id
+           )
+         : savedFavoriteMovies.find(
+              (saveMovie) => saveMovie.movieId === movie.movieId
+           );
+
    const favoriteButtonClassName = `${
       cardType === 'searchMovie'
-         ? !isFavorite
+         ? !isSaved
             ? 'movieCard__button movieCard__favoriteButton_inactive'
             : 'movieCard__button movieCard__favoriteButton_active'
          : 'movieCard__favoriteButton_hidden'
    }`;
+
    const savedButtonClassName = `${
       cardType === 'savedMovie'
          ? 'movieCard__button movieCard__savedButton'
          : 'movieCard__savedButton_hidden'
    }`;
+
    function timingFunc(dur) {
       return `${Math.floor(dur / 60)}ч ${dur % 60}мин`;
    }
 
    function handleFavoriteButtonClick(evt) {
       if (evt.target.classList.contains('movieCard__favoriteButton_inactive')) {
-         setIsFavorite(true);
+         onMovieSave(movie);
       } else {
-         setIsFavorite(false);
+         onMovieDelete(isSaved);
       }
+   }
+
+   function handleDeleteButtonClick() {
+      onMovieDelete(isSaved);
    }
 
    return (
@@ -40,14 +63,22 @@ const MovieCard = ({ cardType, nameRU, duration, imageLink }) => {
             ></button>
             <button
                className={savedButtonClassName}
-               aria-label="toFavorite"
+               aria-label="toSave"
+               onClick={handleDeleteButtonClick}
             ></button>
          </div>
-         <img
-            src={imageLink}
-            alt={`Photo of movie: '${nameRU}'`}
-            className="movieCard__mainImage"
-         />
+         <a
+            href={movie.trailerLink}
+            target="_blank"
+            rel="noreferrer"
+            title="Посмотреть трейлер фильма"
+         >
+            <img
+               src={imageLink}
+               alt={`Movie: '${nameRU}'`}
+               className="movieCard__mainImage"
+            />
+         </a>
       </li>
    );
 };

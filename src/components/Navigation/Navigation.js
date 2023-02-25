@@ -1,14 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import AccountLinkButton from '../AccountLinkButton/AccountLinkButton';
 
 function Navigation({ isLoggedIn }) {
+   const pathName = useLocation().pathname;
    const headerLinkTypeMoviesClassName = `navigation__link navigation__link_type_movies ${
       isLoggedIn ? '' : 'navigation__link_inactive'
-   }`;
+   } ${pathName === '/' ? 'navigation__link_type_mainPage' : ''}`;
    const headerLinkTypeSavedMoviesClassName = `navigation__link navigation__link_type_savedMovies ${
       isLoggedIn ? '' : 'navigation__link_inactive'
-   }`;
+   } ${pathName === '/' ? 'navigation__link_type_mainPage' : ''}`;
    const headerLinkTypeSignUpClassName = `navigation__link navigation__link_type_signUp ${
       isLoggedIn ? 'navigation__link_inactive' : ''
    }`;

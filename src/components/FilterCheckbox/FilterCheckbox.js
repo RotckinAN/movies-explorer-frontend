@@ -1,6 +1,10 @@
 import React from 'react';
 
-function FilterCheckbox({ id }) {
+function FilterCheckbox({ id, checkedCheckBox, setCheckedCheckBox }) {
+   function handleChange(evt) {
+      setCheckedCheckBox(evt.target.checked);
+   }
+
    return (
       <fieldset className="filterCheckbox">
          <label className="filterCheckbox__switch">
@@ -8,7 +12,8 @@ function FilterCheckbox({ id }) {
                type="checkbox"
                className="filterCheckbox__input"
                id={id}
-               // onChange={(evt) => console.log(evt.target.checked)}
+               checked={checkedCheckBox}
+               onChange={(evt) => handleChange(evt)}
             />
             <span className="filterCheckbox__slider"></span>
          </label>
